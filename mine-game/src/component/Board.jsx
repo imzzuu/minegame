@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Tr from "./Tr";
@@ -35,5 +35,7 @@ const Table = styled.table`
     width: 50px;
     height: 50px;
     cursor: pointer;
+    background-color: #eded69;
+    color: #eded69;
   }
 `;
