@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { mineSearch } from "./reducer/mineSlice";
+
 import "./App.css";
 import styled from "styled-components";
+
 import Board from "./component/Board";
+
 // import MineSearch from "./test/MineSearch";
 
 function MineGame() {
   const [start, setStart] = useState(false);
-  const [mineData, setMineData] = useState([]);
+  const dispatch = useDispatch();
 
   const handleClick = () => {
+    const mineData = [];
     const row = 8;
     const col = 8;
     // 2차원 배열 만들기
@@ -29,7 +35,7 @@ function MineGame() {
         mineData[rd1][rd2] = "💣";
       }
     }
-    setMineData([...mineData]);
+    dispatch(mineSearch(mineData));
   };
   return (
     <>
@@ -39,7 +45,7 @@ function MineGame() {
         <button onClick={handleClick}>시작!</button>
         <p>시간 : 0</p>
       </InfoBox>
-      <Board mineData={mineData} />
+      <Board />
 
       {/* <MineSearch /> */}
     </>

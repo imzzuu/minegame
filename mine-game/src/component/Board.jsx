@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Tr from "./Tr";
 
-export default function Board({ mineData }) {
+export default function Board() {
+  const mineData = useSelector((state) => state.mine.mineData);
   return (
     <>
       <Table>
@@ -10,7 +12,7 @@ export default function Board({ mineData }) {
           {Array(mineData.length)
             .fill()
             .map((el, i) => (
-              <Tr key={i} mineData={mineData} rowIndex={i} />
+              <Tr key={i} rowIndex={i} />
             ))}
         </tbody>
       </Table>
