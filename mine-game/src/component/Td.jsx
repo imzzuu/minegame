@@ -12,20 +12,21 @@ const Td = memo(({ rowIndex, colIndex }) => {
   const flag = useSelector((state) => state.mine.flag);
   const openedCell = useSelector((state) => state.mine.openedCell);
   const flagMine = useSelector((state) => state.mine.flagMine);
+  const time = useSelector((state) => state.mine.time);
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
   const [openState, setOpenState] = useState(false);
 
-  // 셀 오픈시, 스타일 변경
+  // 셀 클릭시 (isOpen 상태일 때), 스타일 변경
   const handleStyle = () => {
     if (isOpen) {
       return {
         background: "white",
-        color: "black",
       };
     }
   };
+
   const handleClick = (e) => {
     // 성공 조건 관련 변수
     const successCondition = mineData.length * mineData[0].length - 12;
@@ -61,10 +62,11 @@ const Td = memo(({ rowIndex, colIndex }) => {
         }
       }
     }
+
     // 성공 조건 부합시, 미션 성공 알리기
     if (openedCell === successCondition) {
       setTimeout(() => {
-        alert("MISSION CLREAR");
+        alert(`${time} 초 만에 성공! `);
         dispatch(gameEnd());
       }, 100);
     }
@@ -73,6 +75,7 @@ const Td = memo(({ rowIndex, colIndex }) => {
   // 오른쪽 클릭시, 깃발
   const handleRightClick = (e) => {
     e.preventDefault();
+    // 열리지 않은 셀만 깃발 심기 가능
     if (!isOpen) {
       if (flag > 0 && e.target.innerText !== "⛳️") {
         e.target.innerText = "⛳️";
@@ -87,7 +90,7 @@ const Td = memo(({ rowIndex, colIndex }) => {
     }
     if (flagMine === 12) {
       setTimeout(() => {
-        alert("MISSION CLREAR");
+        alert(`${time} 초 만에 성공! `);
         dispatch(gameEnd());
       }, 100);
     }
@@ -103,28 +106,5 @@ const Td = memo(({ rowIndex, colIndex }) => {
     </>
   );
 });
-
-//   return (
-//     <RealTd
-//       handleClick={handleClick}
-//       handleRightClick={handleRightClick}
-//       handleStyle={handleStyle}
-//       data={mineData[rowIndex][colIndex]}
-//     />
-//   );
-// });
-
-// const RealTd = memo(({ handleClick, handleRightClick, handleStyle, data }) => {
-//   console.log("real td rendered");
-//   return (
-//     <td
-//       style={handleStyle()}
-//       onClick={handleClick}
-//       onContextMenu={handleRightClick}
-//     >
-//       {data}
-//     </td>
-//   );
-// });
 
 export default Td;

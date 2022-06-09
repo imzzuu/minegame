@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { gameStart, gameEnd, setFlag } from "./reducer/mineSlice";
+import { gameStart, gameEnd, setFlag, countTime } from "./reducer/mineSlice";
+import { useEffect } from "react";
 
 import "./App.css";
 import styled from "styled-components";
@@ -9,12 +10,28 @@ import Board from "./component/Board";
 const MineGame = () => {
   const isStart = useSelector((state) => state.mine.isStart);
   const flag = useSelector((state) => state.mine.flag);
+  const time = useSelector((state) => state.mine.time);
   const dispatch = useDispatch();
 
+  // 타이머
+  useEffect(() => {
+    let timer;
+    if (isStart === false) {
+      timer = setInterval(() => {
+        dispatch(countTime());
+      }, 1000);
+    }
+    return () => {
+      clearInterval(timer);
+    };
+  }, [isStart]);
+
+  // start 클릭 시, 데이터 생성
   const handleClick = () => {
     const mineData = [];
     const row = 8;
     const col = 8;
+
     /* 2차원 배열 만들기 */
     for (let i = 0; i < row; i++) {
       mineData.push([]);
@@ -60,7 +77,6 @@ const MineGame = () => {
     }
     dispatch(gameStart(mineData));
   };
-  console.log("메인 랜더");
 
   return (
     <>
@@ -73,12 +89,13 @@ const MineGame = () => {
         <button onClick={() => dispatch(gameEnd())} disabled={isStart}>
           Reset
         </button>
-        <p>시간 : 0</p>
+        <p>시간 : {time} 초</p>
       </InfoBox>
       <Board flag={flag} setFlag={setFlag} />
     </>
   );
 };
+
 const Title = styled.h2`
   text-align: center;
 `;

@@ -8,6 +8,7 @@ export const mineSlice = createSlice({
     flag: 12,
     flagMine: 1,
     openedCell: 1,
+    time: 0,
   },
   reducers: {
     gameStart: (state = initialState, action) => {
@@ -35,6 +36,12 @@ export const mineSlice = createSlice({
         openedCell: state.openedCell + 1,
       };
     },
+    countTime: (state = initialState) => {
+      return {
+        ...state,
+        time: state.time + 1,
+      };
+    },
     gameEnd: (state) => {
       return {
         mineData: [],
@@ -42,11 +49,18 @@ export const mineSlice = createSlice({
         flag: 12,
         flagMine: 1,
         openedCell: 1,
+        time: 0,
       };
     },
   },
 });
 
-export const { gameStart, setFlag, countFlagMine, countOpenedCell, gameEnd } =
-  mineSlice.actions;
+export const {
+  gameStart,
+  setFlag,
+  countFlagMine,
+  countOpenedCell,
+  countTime,
+  gameEnd,
+} = mineSlice.actions;
 export default mineSlice.reducer;

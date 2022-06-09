@@ -5,7 +5,6 @@ import Td from "./Td";
 
 const Tr = memo(({ rowIndex }) => {
   const mineData = useSelector((state) => state.mine.mineData);
-  console.log("tr랜더");
 
   return (
     <tr>
