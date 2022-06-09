@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { gameStart } from "./reducer/mineSlice";
+import { gameStart, gameEnd, setFlag } from "./reducer/mineSlice";
 
 import "./App.css";
 import styled from "styled-components";
 
 import Board from "./component/Board";
 
-function MineGame() {
+const MineGame = () => {
   const isStart = useSelector((state) => state.mine.isStart);
+  const flag = useSelector((state) => state.mine.flag);
   const dispatch = useDispatch();
 
   const handleClick = () => {
@@ -29,7 +30,7 @@ function MineGame() {
       if (mineData[rowNum][colNum]) {
         i--;
       } else {
-        mineData[rowNum][colNum] = "X";
+        mineData[rowNum][colNum] = "💣";
         countMines(rowNum, colNum, mineData);
       }
     }
@@ -37,7 +38,7 @@ function MineGame() {
     function countMines(rowNum, colNum, mineData) {
       let nearRow = rowNum + 1;
       let nearCol = colNum + 1;
-      // 지뢰 위치 -1 행, 열 ~ +1 행, 열 돌면서 검사
+      // 지뢰 위치 '-1 행, 열' ~ '+1 행, 열' 돌면서 검사
       for (let i = rowNum - 1; i <= nearRow; i++) {
         for (let j = colNum - 1; j <= nearCol; j++) {
           if (
@@ -59,20 +60,25 @@ function MineGame() {
     }
     dispatch(gameStart(mineData));
   };
+  console.log("메인 랜더");
+
   return (
     <>
       <Title>지뢰찾기</Title>
       <InfoBox>
-        <p>지뢰 갯수 : 12 </p>
+        <p>지뢰 갯수 : {flag}</p>
         <button onClick={handleClick} disabled={!isStart}>
-          시작!
+          Start
+        </button>
+        <button onClick={() => dispatch(gameEnd())} disabled={isStart}>
+          Reset
         </button>
         <p>시간 : 0</p>
       </InfoBox>
-      <Board />
+      <Board flag={flag} setFlag={setFlag} />
     </>
   );
-}
+};
 const Title = styled.h2`
   text-align: center;
 `;

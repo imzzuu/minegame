@@ -5,6 +5,7 @@ export const mineSlice = createSlice({
   initialState: {
     mineData: [],
     isStart: true,
+    flag: 12,
   },
   // reducer 정의
   reducers: {
@@ -15,14 +16,22 @@ export const mineSlice = createSlice({
         isStart: false,
       };
     },
+    setFlag: (state = initialState, action) => {
+      return {
+        ...state,
+        flag: state.flag + action.payload,
+      };
+    },
+
     gameEnd: (state) => {
       return {
         mineData: [],
         isStart: true,
+        flag: 12,
       };
     },
   },
 });
 
-export const { gameStart, gameEnd } = mineSlice.actions;
+export const { gameStart, setFlag, gameEnd } = mineSlice.actions;
 export default mineSlice.reducer;

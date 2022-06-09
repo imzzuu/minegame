@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import store from "./reducer/store.js";
+import MineSearch from "./test/MineSearch";
 
 import "./index.css";
 
@@ -12,5 +13,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <MineGame />
   </Provider>
+  // <MineSearch />
   // {/* </React.StrictMode> */}
 );

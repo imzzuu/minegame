@@ -1,10 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Tr from "./Tr";
 
-export default function Board() {
+const Board = memo(() => {
   const mineData = useSelector((state) => state.mine.mineData);
+  console.log("보드랜더");
   return (
     <>
       <Table>
@@ -18,7 +19,7 @@ export default function Board() {
       </Table>
     </>
   );
-}
+});
 
 const Table = styled.table`
   border: 2px solid black;
@@ -39,3 +40,5 @@ const Table = styled.table`
     color: #eded69;
   }
 `;
+
+export default Board;

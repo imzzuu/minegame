@@ -1,10 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { useSelector } from "react-redux";
 
 import Td from "./Td";
 
-export default function Tr({ rowIndex }) {
+const Tr = memo(({ rowIndex }) => {
   const mineData = useSelector((state) => state.mine.mineData);
+  console.log("tr랜더");
 
   return (
     <tr>
@@ -14,4 +15,5 @@ export default function Tr({ rowIndex }) {
           .map((td, i) => <Td key={i} rowIndex={rowIndex} colIndex={i} />)}
     </tr>
   );
-}
+});
+export default Tr;
