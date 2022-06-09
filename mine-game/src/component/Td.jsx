@@ -1,82 +1,130 @@
 import React, { useState, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { gameEnd, setFlag } from "../reducer/mineSlice";
+import {
+  gameEnd,
+  setFlag,
+  countOpenedCell,
+  countFlagMine,
+} from "../reducer/mineSlice";
 
 const Td = memo(({ rowIndex, colIndex }) => {
   const mineData = useSelector((state) => state.mine.mineData);
   const flag = useSelector((state) => state.mine.flag);
+  const openedCell = useSelector((state) => state.mine.openedCell);
+  const flagMine = useSelector((state) => state.mine.flagMine);
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [openState, setOpenState] = useState(false);
+
+  // 셀 오픈시, 스타일 변경
   const handleStyle = () => {
-    if (open) {
+    if (isOpen) {
       return {
         background: "white",
         color: "black",
       };
     }
   };
-
   const handleClick = (e) => {
-    setOpen(true);
+    // 성공 조건 관련 변수
+    const successCondition = mineData.length * mineData[0].length - 12;
+
+    // 셀 오픈
+    setIsOpen(true);
+
+    // 깃발이거나, 깃발 && 폭탄일 시 셀 오픈 스타일 차단
     if (
       e.target.innerText === "⛳️" ||
       (e.target.innerText === "⛳️" && mineData[rowIndex][colIndex] === "💣")
     ) {
-      setOpen(false);
+      setIsOpen(false);
+      // 폭탄일 시, 게임 종료
     } else if (mineData[rowIndex][colIndex] === "💣") {
       e.target.innerText = "💣";
       setTimeout(() => {
         alert("게임 종료");
         dispatch(gameEnd());
       }, 100);
+
+      // 일반 셀일 경우 (1. 지뢰 갯수 open (단, 0개 일 땐 "") 2. open 된 셀 갯수 세기)
     } else {
-      e.target.innerText = mineData[rowIndex][colIndex];
+      if (openState === false) {
+        if (mineData[rowIndex][colIndex] === 0) {
+          e.target.innerText = "";
+          dispatch(countOpenedCell());
+          setOpenState(true);
+        } else {
+          e.target.innerText = mineData[rowIndex][colIndex];
+          dispatch(countOpenedCell());
+          setOpenState(true);
+        }
+      }
+    }
+    // 성공 조건 부합시, 미션 성공 알리기
+    if (openedCell === successCondition) {
+      setTimeout(() => {
+        alert("MISSION CLREAR");
+        dispatch(gameEnd());
+      }, 100);
     }
   };
 
+  // 오른쪽 클릭시, 깃발
   const handleRightClick = (e) => {
     e.preventDefault();
-    if (!open) {
+    if (!isOpen) {
       if (flag > 0 && e.target.innerText !== "⛳️") {
         e.target.innerText = "⛳️";
         dispatch(setFlag(-1));
+        if (mineData[rowIndex][colIndex] === "💣") {
+          dispatch(countFlagMine());
+        }
       } else if (flag >= 0 && e.target.innerText === "⛳️") {
         e.target.innerText = "";
         dispatch(setFlag(1));
       }
     }
+    if (flagMine === 12) {
+      setTimeout(() => {
+        alert("MISSION CLREAR");
+        dispatch(gameEnd());
+      }, 100);
+    }
   };
-  console.log("td 랜더");
-
-  // return (
-  //   <>
-  //     <td
-  //       style={handleStyle()}
-  //       onClick={handleClick}
-  //       onContextMenu={handleRightClick}
-  //     ></td>
-  //   </>
-  // );
 
   return (
-    <RealTd
-      handleClick={handleClick}
-      handleRightClick={handleRightClick}
-      handleStyle={handleStyle}
-    />
+    <>
+      <td
+        style={handleStyle()}
+        onClick={handleClick}
+        onContextMenu={handleRightClick}
+      ></td>
+    </>
   );
 });
 
-const RealTd = memo(({ handleClick, handleRightClick, handleStyle }) => {
-  console.log("real td rendered");
-  return (
-    <td
-      style={handleStyle()}
-      onClick={handleClick}
-      onContextMenu={handleRightClick}
-    ></td>
-  );
-});
+//   return (
+//     <RealTd
+//       handleClick={handleClick}
+//       handleRightClick={handleRightClick}
+//       handleStyle={handleStyle}
+//       data={mineData[rowIndex][colIndex]}
+//     />
+//   );
+// });
+
+// const RealTd = memo(({ handleClick, handleRightClick, handleStyle, data }) => {
+//   console.log("real td rendered");
+//   return (
+//     <td
+//       style={handleStyle()}
+//       onClick={handleClick}
+//       onContextMenu={handleRightClick}
+//     >
+//       {data}
+//     </td>
+//   );
+// });
 
 export default Td;

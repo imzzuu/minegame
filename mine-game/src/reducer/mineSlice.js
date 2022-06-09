@@ -6,8 +6,9 @@ export const mineSlice = createSlice({
     mineData: [],
     isStart: true,
     flag: 12,
+    flagMine: 1,
+    openedCell: 1,
   },
-  // reducer 정의
   reducers: {
     gameStart: (state = initialState, action) => {
       return {
@@ -22,16 +23,30 @@ export const mineSlice = createSlice({
         flag: state.flag + action.payload,
       };
     },
-
+    countFlagMine: (state = initialState) => {
+      return {
+        ...state,
+        flagMine: state.flagMine + 1,
+      };
+    },
+    countOpenedCell: (state = initialState) => {
+      return {
+        ...state,
+        openedCell: state.openedCell + 1,
+      };
+    },
     gameEnd: (state) => {
       return {
         mineData: [],
         isStart: true,
         flag: 12,
+        flagMine: 1,
+        openedCell: 1,
       };
     },
   },
 });
 
-export const { gameStart, setFlag, gameEnd } = mineSlice.actions;
+export const { gameStart, setFlag, countFlagMine, countOpenedCell, gameEnd } =
+  mineSlice.actions;
 export default mineSlice.reducer;

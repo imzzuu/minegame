@@ -37,7 +37,7 @@ const Table = styled.table`
     height: 50px;
     cursor: pointer;
     background-color: #eded69;
-    color: #eded69;
+    /* color: #eded69; */
   }
 `;
 
