@@ -5,7 +5,7 @@ import store from "./reducer/store.js";
 
 import "./index.css";
 
-import MineGame from "./MineGame";
+import MineGame from "./component/MineGame";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>

@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { gameStart, gameEnd, setFlag, countTime } from "./reducer/mineSlice";
+import { gameStart, gameEnd, setFlag, countTime } from "../reducer/mineSlice";
 import { useEffect } from "react";
 
-import "./App.css";
+import "../App.css";
 import styled from "styled-components";
 
-import Board from "./component/Board";
+import Board from "./Board";
 
 const MineGame = () => {
   const isStart = useSelector((state) => state.mine.isStart);
