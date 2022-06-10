@@ -1,13 +1,34 @@
 # 지뢰 찾기 게임
 
-<img width="400" height = "450" alt="스크린샷 2022-06-10 오전 1 46 28" src="https://user-images.githubusercontent.com/98930796/172900871-8b4683be-7f76-4277-816c-0f9fd92899ea.png">
+<!-- <img width="400" height = "450" alt="스크린샷 2022-06-10 오전 1 46 28" src="https://user-images.githubusercontent.com/98930796/172900871-8b4683be-7f76-4277-816c-0f9fd92899ea.png"> -->
+
+![Jun-10-2022 09-09-09](https://user-images.githubusercontent.com/98930796/172965186-bc73674a-7adf-49c6-a8f8-59cdd599958b.gif)
 
 <br/>
 
 ### 📍 개요
 
 - **작업 기간** : 6월 7일 ~ 6월 10일 (72 시간)
-- **사용 기술 및 라이브러리** : React (vite), Redux-toolkit
+- **사용 기술 및 라이브러리** : React (vite), Redux-toolkit<br/>
+  사용이유 <br/>
+  - React (vite) : 배열 메서드를 활용해 짧은 코드로 DOM을 구상할 수 있으며, 각 셀을 클릭함에 따라 (state 변화) ui 가 동적으로 변화하는 프로젝트에 적합하다 생각하였다.
+    또한, cra 보다 vite 가 속도면에서 우수하여 채택하였다.
+  - Redux-toolkit : 실제 프로젝트들과 규모는 달라 props 를 통해 전달이 가능하긴 하지만, 모든 컴포넌트에서 mineData를 사용해 Board 를 그리고 있기 때문에 전역으로 관리를 하였고, 직관적으로 reducer type 명시가 가능한 Redux-toolkit을 사용하였다.
+
+<br/>
+
+### 📍 컴포넌트 구성
+
+- **MineGame.jsx** : Title, InfoBox(지뢰갯수, start/restart 버튼, 시간), Board
+- **Board.jsx** : 2차원 배열을 기반으로 tr 생성
+- **Tr.jsx** : 2차원 배열을 기반으로 td생성
+- **Td.jsx** : td 상세 내용
+  <br/>
+  구성 이유 <br/>
+  각 셀의 모양세와 근본적인 이벤트 동작 기능은 같은데, 셀 마다 보여줄 내용이 다르고, 그에 따른 이벤트를 적용해야 하기 때문에
+  컴포넌트를 위와 같은 방식으로 나누게 되었다.
+
+<br/>
 
 ### 📍 구현 기능
 
@@ -15,6 +36,7 @@
   - 닫혀있는 셀 8x8
   - 남은 지뢰 개수
   - start, restart 버튼
+  - 소요 시간
 - **start 버튼 클릭시 임의의 지뢰 data와 함께 Board 생성**
 - **닫혀있는 셀 왼쪽 클릭 이벤트**
   - 지뢰인 경우: 지뢰가 표시되고 게임 종료 ⇒> 자동으로 reset
